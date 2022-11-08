@@ -5,26 +5,15 @@ const port = 3000;
 
 const server = express();
 
-server.get("/", (req, res) => {
-    res.type('html');
-    res.status(200);
-    res.end("Home");
-});
+const mongoose = require("mongoose");
+// mongoose.connect("mongodb://localhost:27017/apinode"); // Whithout Docker
+mongoose.connect("mongodb://mongo/apinode");
 
-server.get("/posts", (req, res) => {
-    res.type('html');
-    res.status(200);
-    res.end("Liste des articles");
-});
-server.post("/posts", (req, res) => {
-    res.type('html');
-    res.status(201);
-    res.end("Article crée");
-});
+server.use(express.urlencoded());
+server.use(express.json());
 
-server.get("/posts/:id", (req, res) => {
-    res.type('html');
-    res.status(200);
-    res.end(`Article ${req.params.id}`);
-});
+
+const postRoute = require("./api/routes/postRoute");
+postRoute(server);
+
 server.listen(port, hostname);
