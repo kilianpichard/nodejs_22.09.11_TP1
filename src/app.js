@@ -1,28 +1,30 @@
-const http = require('http');
+const express = require('express');
 
 const hostname = "0.0.0.0";
 const port = 3000;
 
-const server = http.createServer((req, res) => {
+const server = express();
 
-    let url = req.url;
-
-    switch (url) {
-        case "/":
-            res.end("Home");
-            break;
-        case "/posts":
-            res.statusCode = 200;
-            res.setHeader = ('Content-type', "text/html");
-            res.end("Liste des articles !");
-            break;
-
-        default:
-            res.statusCode = 404;
-            res.end("Erreur")
-            break;
-    }
-
+server.get("/", (req, res) => {
+    res.type('html');
+    res.status(200);
+    res.end("Home");
 });
 
+server.get("/posts", (req, res) => {
+    res.type('html');
+    res.status(200);
+    res.end("Liste des articles");
+});
+server.post("/posts", (req, res) => {
+    res.type('html');
+    res.status(201);
+    res.end("Article crée");
+});
+
+server.get("/posts/:id", (req, res) => {
+    res.type('html');
+    res.status(200);
+    res.end(`Article ${req.params.id}`);
+});
 server.listen(port, hostname);
