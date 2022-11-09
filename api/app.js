@@ -12,6 +12,17 @@ mongoose
 	.then(() => console.log("Connexion à MongoDB réussie !"));
 //mongoose.connect("mongodb://mongo/apinode");
 
+//cors pour autoriser les requetes de n'importe quelle origine
+const cors = require("cors");
+server.use(
+	cors({
+		origin: "*",
+		methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+		preflightContinue: false,
+		optionsSuccessStatus: 204,
+	}),
+);
+
 server.use(express.urlencoded());
 server.use(express.json());
 
