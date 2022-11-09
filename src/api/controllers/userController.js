@@ -49,7 +49,7 @@ exports.loginRegister = (req, res) => {
 							email: user.email,
 							userId: user._id,
 						},
-						"secret",
+						process.env.JWT_KEY,
 						{
 							expiresIn: "1h",
 						},
