@@ -48,7 +48,13 @@
 					"name": "POST /posts",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmJhOGRmZTMwMzlkMGVhNjI5OWU2YiIsImVtYWlsIjoiamFjcXVlc0B0b3RvLmZyIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjY4MDAwMDE0LCJleHAiOjE2NzA1OTIwMTR9.CSjxwZiQcPdmLcsMvWY7vTh7wlBaKICy0uM-cMq71Yg",
+								"type": "default"
+							}
+						],
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
@@ -59,8 +65,9 @@
 								},
 								{
 									"key": "content",
-									"value": "mon article",
-									"type": "default"
+									"value": "mon articletototo",
+									"type": "default",
+									"disabled": true
 								}
 							]
 						},
@@ -266,6 +273,79 @@
 							"path": [
 								"comments",
 								"636a7580d8603f7a125bc03c"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "POST /user/register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "toto@toto.fr",
+									"type": "default"
+								},
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/user/register",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /user/login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "toto@toto.fr",
+									"type": "default"
+								},
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/user/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"login"
 							]
 						}
 					},
