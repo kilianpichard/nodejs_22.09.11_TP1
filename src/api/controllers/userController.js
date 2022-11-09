@@ -1,5 +1,6 @@
 const User = require('../models/userModel');
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 exports.userRegister = (req, res) => {
     let newUser = new User(req.body);
