@@ -1,7 +1,7 @@
 const express = require("express");
 
 const hostname = "0.0.0.0";
-const port = 3000;
+const port = 8080;
 
 const server = express();
 require("dotenv").config();
@@ -15,13 +15,13 @@ mongoose
 server.use(express.urlencoded());
 server.use(express.json());
 
-const postRoute = require("./api/routes/postRoute");
+const postRoute = require("./src/routes/postRoute");
 postRoute(server);
 
-const commentRoute = require("./api/routes/commentRoute");
+const commentRoute = require("./src/routes/commentRoute");
 commentRoute(server);
 
-const userRoute = require("./api/routes/userRoute");
+const userRoute = require("./src/routes/userRoute");
 userRoute(server);
 
 server.listen(port, hostname);
