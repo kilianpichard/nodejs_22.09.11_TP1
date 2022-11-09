@@ -13,12 +13,12 @@ function App() {
 	const isLogin = path === "/login";
 
 	return (
-		<>
+		<div style={{ backgroundColor: "#FAFAFA" }}>
 			<Header />
-			<Container maxWidth="sm">
+			<Container maxWidth="lg">
 				{token ? <Posts /> : isLogin ? <Login /> : <Register />}
 			</Container>
-		</>
+		</div>
 	);
 }
 

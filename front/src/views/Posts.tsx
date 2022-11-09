@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Card, Stack } from "@mui/material";
 import axios from "axios";
 
 interface IPost {
@@ -26,13 +27,13 @@ export const Posts = () => {
 	}, []);
 
 	return (
-		<div>
+		<Stack spacing={2}>
 			{posts.map((post: IPost) => (
-				<div key={post._id}>
+				<Card key={post._id} style={{ padding: 20 }}>
 					<h1>{post.title}</h1>
 					<p>{post.content}</p>
-				</div>
+				</Card>
 			))}
-		</div>
+		</Stack>
 	);
 };

@@ -34,7 +34,8 @@ export const Register = () => {
 	};
 
 	return (
-		<Stack spacing={2}>
+		<Stack spacing={2} justifyContent="center" alignItems="stretch">
+			<h1>Register</h1>
 			<TextField
 				label="Email"
 				variant="outlined"
