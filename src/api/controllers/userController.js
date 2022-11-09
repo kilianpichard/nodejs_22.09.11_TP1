@@ -1,7 +1,6 @@
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-require("dotenv").config();
 
 exports.userRegister = (req, res) => {
 	bcrypt.hash(req.body.password, 10, (error, hash) => {
@@ -45,6 +44,7 @@ exports.loginRegister = (req, res) => {
 						{
 							email: user.email,
 							userId: user._id,
+							role: user.role,
 						},
 						process.env.JWT_KEY,
 						{

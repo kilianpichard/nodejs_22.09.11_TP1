@@ -4,7 +4,7 @@ module.exports = (server) => {
 	const adminMiddleware = require("../middlewares/adminMiddleware");
 	server
 		.route("/posts")
-		.get(postController.listAllPosts)
+		.get(jwtMiddleware.verifyToken, postController.listAllPosts)
 		.post(adminMiddleware.isAdmin, postController.createAPost);
 
 	server
