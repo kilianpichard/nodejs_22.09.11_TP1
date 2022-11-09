@@ -1,59 +1,71 @@
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+require("dotenv").config();
 
 exports.userRegister = (req, res) => {
-	let newUser = new User(req.body);
-
-	newUser.save((error, user) => {
+	bcrypt.hash(req.body.password, 10, (error, hash) => {
 		if (error) {
-			res.status(401);
-			console.log(error);
-			res.json({ message: "Reqûete invalide." });
+			return res.status(500).json({
+				error: error,
+			});
 		} else {
-			res.status(201);
-			res.json({ message: `Utilisateur crée : ${user.email}` });
+			req.body.password = hash;
+			const user = new User(req.body);
+
+			user.save((error, user) => {
+				if (error) {
+					return res.status(500).json({
+						error: error,
+					});
+				} else {
+					return res.status(201).json({
+						message: "User created successfully",
+					});
+				}
+			});
 		}
 	});
 };
 
 exports.loginRegister = (req, res) => {
-	// Find user
 	User.findOne({ email: req.body.email }, (error, user) => {
-		// If user not found
 		if (error) {
-			res.status(500);
-			console.log(error);
-			res.json({ message: "Utilisateur non trouvé" });
+			return res.status(500).json({
+				error: error,
+			});
+		} else if (user) {
+			bcrypt.compare(req.body.password, user.password, (error, result) => {
+				if (error) {
+					return res.status(401).json({
+						error: error,
+					});
+				} else if (result) {
+					const token = jwt.sign(
+						{
+							email: user.email,
+							userId: user._id,
+						},
+						process.env.JWT_KEY,
+						{
+							expiresIn: "1h",
+						},
+					);
+
+					return res.status(200).json({
+						message: "Auth successful",
+						token: token,
+					});
+				} else {
+					return res.status(401).json({
+						message: "Password incorrect",
+					});
+				}
+			});
 		} else {
-			// User found
-			if (user.email == req.body.email && user.password == req.body.password) {
-				// Password correct
-				let userData = {
-					id: user._id,
-					email: user.email,
-					role: user.role,
-				};
-				jwt.sign(
-					userData,
-					process.env.JWT_KEY,
-					{ expiresIn: "30 days" },
-					(error, token) => {
-						if (error) {
-							res.status(500);
-							console.log(error);
-							res.json({ message: "Impossible de générer le token" });
-						} else {
-							res.status(200);
-							res.json({ token });
-						}
-					},
-				);
-			} else {
-				// Password don't match
-				res.status(401);
-				console.log(error);
-				res.json({ message: "Email ou Mot de passe incorrect" });
-			}
+			return res.status(404).json({
+				message: "User not found",
+			});
 		}
 	});
 };
