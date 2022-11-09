@@ -1,7 +1,30 @@
 import { Card, Button, Stack } from "@mui/material";
+import { useState, useEffect } from "react";
+import axios from "axios";
+
+interface IUser {
+	email: string;
+	role: string;
+}
 
 export const Header = () => {
 	const token = localStorage.getItem("token");
+
+	const [user, setUser] = useState<IUser>();
+
+	useEffect(() => {
+		let api = "http://localhost:8080/user/me";
+		axios
+			.get(api, {
+				headers: {
+					Authorization: token,
+				},
+			})
+			.then((res: any) => {
+				console.log(res.data);
+				setUser(res.data);
+			});
+	}, []);
 
 	const handleLogout = () => {
 		localStorage.removeItem("token");
@@ -16,7 +39,10 @@ export const Header = () => {
 		<Card style={{ marginBottom: 50 }}>
 			{token ? (
 				<Stack direction="row" spacing={2}>
-					<Button onClick={handleNewPost}>New Post</Button>
+					{user && <h1>Welcome {user.email}</h1>}
+					{user?.role === "admin" && (
+						<Button onClick={handleNewPost}>New Post</Button>
+					)}
 					<Button onClick={handleLogout}>Logout</Button>
 				</Stack>
 			) : (
