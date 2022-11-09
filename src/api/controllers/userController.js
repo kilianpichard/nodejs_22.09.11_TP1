@@ -1,4 +1,4 @@
-const User = require('../models/userModel');
+const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
@@ -27,9 +27,6 @@ exports.userRegister = (req, res) => {
 		}
 	});
 };
-
-
-}
 
 exports.loginRegister = (req, res) => {
 	User.findOne({ email: req.body.email }, (error, user) => {
@@ -72,21 +69,3 @@ exports.loginRegister = (req, res) => {
 		}
 	});
 };
-
-                    }
-                    else {
-                        res.status(200);
-                        res.json({token});
-                    }
-                })
-            }
-            else {
-                // Password don't match
-                res.status(401);
-                console.log(error);
-                res.json({ message: "Email ou Mot de passe incorrect" });
-
-            }
-        }
-    })
-}
