@@ -22,7 +22,7 @@ export const Posts = () => {
 			})
 			.then((res) => {
 				console.log(res.data);
-				setPosts(res.data);
+				setPosts(res.data.reverse());
 			});
 	}, []);
 

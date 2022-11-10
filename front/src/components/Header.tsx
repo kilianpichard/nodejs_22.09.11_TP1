@@ -35,15 +35,22 @@ export const Header = () => {
 		window.location.href = "/new-post";
 	};
 
+	const handleHome = () => {
+		window.location.href = "/";
+	};
+
 	return (
 		<Card style={{ marginBottom: 50 }}>
 			{token ? (
-				<Stack direction="row" spacing={2}>
+				<Stack direction="row" spacing={50}>
 					{user && <h1>Welcome {user.email}</h1>}
-					{user?.role === "admin" && (
-						<Button onClick={handleNewPost}>New Post</Button>
-					)}
-					<Button onClick={handleLogout}>Logout</Button>
+					<Stack direction="row" spacing={2}>
+						<Button onClick={handleHome}>Home</Button>
+						{user?.role === "admin" && (
+							<Button onClick={handleNewPost}>New Post</Button>
+						)}
+						<Button onClick={handleLogout}>Logout</Button>
+					</Stack>
 				</Stack>
 			) : (
 				<></>
