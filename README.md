@@ -16,3 +16,9 @@ docker-compose up
 ```
 docker exec -ti container bash
 ```
+
+## Admin user
+```
+email: admin@admin.fr
+password: admin
+```
