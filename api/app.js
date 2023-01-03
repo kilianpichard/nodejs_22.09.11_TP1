@@ -8,7 +8,7 @@ require("dotenv").config();
 
 const mongoose = require("mongoose");
 mongoose
-	.connect("mongodb://localhost:27017/apinode")
+    .connect("mongodb+srv://prams:prams@cluster0.llp9m.mongodb.net/apinode?authSource=admin&replicaSet=atlas-9q6q4j-shard-0&readPreference=primary&ssl=true")
 	.then(() => console.log("Connexion à MongoDB réussie !"));
 //mongoose.connect("mongodb://mongo/apinode");
 

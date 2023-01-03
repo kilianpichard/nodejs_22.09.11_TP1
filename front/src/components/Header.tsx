@@ -1,60 +1,55 @@
 import { Card, Button, Stack } from "@mui/material";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import jwt from "jwt-decode";
 
 interface IUser {
-	email: string;
-	role: string;
+  email: string;
+  role: string;
 }
 
 export const Header = () => {
-	const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
+  const email = localStorage.getItem("email");
 
-	const [user, setUser] = useState<IUser>();
+  const [isAdmin, setIsAdmin] = useState(false);
 
-	useEffect(() => {
-		let api = "http://localhost:8080/user/me";
-		axios
-			.get(api, {
-				headers: {
-					Authorization: token,
-				},
-			})
-			.then((res: any) => {
-				console.log(res.data);
-				setUser(res.data);
-			});
-	}, []);
+  useEffect(() => {
+    if (token) {
+      const decoded: IUser = jwt(token);
+      if (decoded.role === "admin") {
+        setIsAdmin(true);
+      }
+    }
+  }, [token]);
 
-	const handleLogout = () => {
-		localStorage.removeItem("token");
-		window.location.href = "/";
-	};
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("email");
+    window.location.href = "/";
+  };
 
-	const handleNewPost = () => {
-		window.location.href = "/new-post";
-	};
+  const handleNewPost = () => {
+    window.location.href = "/new-post";
+  };
 
-	const handleHome = () => {
-		window.location.href = "/";
-	};
+  const handleHome = () => {
+    window.location.href = "/";
+  };
 
-	return (
-		<Card style={{ marginBottom: 50 }}>
-			{token ? (
-				<Stack direction="row" spacing={50}>
-					{user && <h1>Welcome {user.email}</h1>}
-					<Stack direction="row" spacing={2}>
-						<Button onClick={handleHome}>Home</Button>
-						{user?.role === "admin" && (
-							<Button onClick={handleNewPost}>New Post</Button>
-						)}
-						<Button onClick={handleLogout}>Logout</Button>
-					</Stack>
-				</Stack>
-			) : (
-				<></>
-			)}
-		</Card>
-	);
+  return (
+    <Card style={{ marginBottom: 50 }}>
+      {token ? (
+        <Stack direction="row" spacing={50}>
+          <h1>Welcome {email}</h1>
+          <Stack direction="row" spacing={2}>
+            <Button onClick={handleHome}>Home</Button>
+            {isAdmin && <Button onClick={handleNewPost}>New Post</Button>}
+            <Button onClick={handleLogout}>Logout</Button>
+          </Stack>
+        </Stack>
+      ) : (
+        <></>
+      )}
+    </Card>
+  );
 };

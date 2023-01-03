@@ -11,11 +11,29 @@ services:
       - '-c'
       - 'npm install && npm start'
     ports:
-      - '3000:3000'
+      - '8080:8080'
     volumes:
-      - './src:/home/node/app'
+      - './api:/home/node/app'
+      - '/home/node/app/node_modules'
     links:
       - mongo
+    networks:
+      - my-network
+  front:
+    container_name: project_front
+    image: 'node:latest'
+    working_dir: /home/node/app
+    env_file:
+      - .env
+    command:
+      - /bin/sh
+      - '-c'
+      - 'npm install && npm start'
+    ports:
+      - '3000:3000'
+    volumes:
+      - './front:/home/node/app'
+      - '/home/node/app/node_modules'
     networks:
       - my-network
   mongo:

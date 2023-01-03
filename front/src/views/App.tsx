@@ -4,64 +4,55 @@ import { Login } from "../views/Login";
 import { Posts } from "../views/Posts";
 import { Container } from "@mui/material";
 import { NewPost } from "../views/NewPost";
-import { Header } from "../components/Header";
-import axios from "axios";
+import jwt from "jwt-decode";
 
 interface IUser {
-	email: string;
-	role: string;
+  email: string;
+  role: string;
 }
 
 function App() {
-	const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
-	//check if /login or /register
-	const path = window.location.pathname;
+  //check if /login or /register
+  const path = window.location.pathname;
 
-	useEffect(() => {
-		let api = "http://localhost:8080/user/me";
-		axios
-			.get(api, {
-				headers: {
-					Authorization: token,
-				},
-			})
-			.then((res: any) => {
-				const isAdmin = res.data.role === "admin";
-				if (!isAdmin && path === "/new-post") {
-					window.location.href = "/";
-				}
-			});
-	}, []);
+  const [isAdmin, setIsAdmin] = useState(false);
 
-	if (token) {
-		if (path === "/login" || path === "/register") {
-			window.location.href = "/";
-		}
-	} else {
-		if (path !== "/login" && path !== "/register") {
-			window.location.href = "/login";
-		}
-	}
+  useEffect(() => {
+    if (token) {
+      const decoded: IUser = jwt(token);
+      if (decoded.role === "admin") {
+        setIsAdmin(true);
+      }
+    }
+  }, [token]);
 
-	return (
-		<div style={{ backgroundColor: "#FAFAFA" }}>
-			<Header />
-			<Container maxWidth="lg">
-				{path === "/" && token ? (
-					<Posts />
-				) : path === "/new-post" && token ? (
-					<NewPost />
-				) : path === "/login" ? (
-					<Login />
-				) : path === "/register" ? (
-					<Register />
-				) : (
-					<Login />
-				)}
-			</Container>
-		</div>
-	);
+  if (token) {
+    if (path === "/login" || path === "/register") {
+      window.location.href = "/";
+    }
+  } else {
+    if (path !== "/login" && path !== "/register") {
+      window.location.href = "/login";
+    }
+  }
+
+  return (
+    <Container maxWidth="lg">
+      {path === "/" && token ? (
+        <Posts />
+      ) : path === "/new-post" && token && isAdmin ? (
+        <NewPost />
+      ) : path === "/login" ? (
+        <Login />
+      ) : path === "/register" ? (
+        <Register />
+      ) : (
+        <Login />
+      )}
+    </Container>
+  );
 }
 
 export default App;
